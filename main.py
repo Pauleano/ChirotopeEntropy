@@ -1,4 +1,4 @@
-from ordertype_funcs import list_of_ordertypes,index_of_ordertypes,ordertypes_from_chirotopes
+from ordertype_funcs import list_of_ordertypes,index_of_ordertypes,ordertypes_from_chirotopes,entropies
 import numpy as np
 
 #testing example
@@ -36,4 +36,11 @@ for i in ordertypes:
     a,b,_=index_of_ordertypes(i,6)
     print(a)
     print(b)
-    
+
+
+freqs=np.zeros((2,1))+1
+chiros,ordertype,inside_ordertype=entropies(freqs,3)
+print(chiros)
+print(ordertype)
+print(inside_ordertype)
+
