@@ -186,3 +186,41 @@ def list_of_ordertypes(chiro_input,index_input):
 
     return ordertype_lists,index_lists
 
+
+def entropies(chiro_freqs,order): #absolut frequency as input becuase its more stable for calculations(?)
+    
+    #for normalisation
+    max_ordertype=[1,2,3,16]
+    max_chiros=[2,14,264,11904]
+
+    ordertype_indizes = []
+    with open(f"ordertype_indizes_order_{order}_lexico.txt") as file:
+        for line in file:
+            # Split on spaces
+            parts = [p for p in line.strip().split(" ")]
+
+            arr = np.array(parts, dtype=int)
+            print(arr)
+            ordertype_indizes.append(arr)
+
+    #shannon over all chirotopes
+    chiro_probs=chiro_freqs/np.sum(chiro_freqs)
+    #print(np.sum(chiro_freqs))
+    shannon_over_chirotopes=-sum(p * np.log(p) for p in chiro_probs)/np.log(max_chiros[order-3])
+
+    #shannon over all ordertypes
+    ordertype_freqs=np.zeros((max_ordertype[order-3],1))
+    #print(ordertype_freqs.shape)
+    for i in range(ordertype_freqs.shape[0]):
+        ordertype_freqs[i]=chiro_freqs[ordertype_indizes[i]].sum()
+    #print(ordertype_freqs)
+    ordertype_probs=ordertype_freqs/np.sum(chiro_freqs)
+    shannon_over_ordertypes=-sum(p * np.log(p) for p in ordertype_probs)/np.log(max_ordertype[order-3])   #one value, pool chirotope_probs of one ordertype
+    #print(max_ordertype[order-3])
+    #shannon inside ordertypes
+    shannon_inside_ordertype=np.zeros((max_ordertype[order-3],1))
+    for i in range(ordertype_freqs.shape[0]):
+        chiro_probs_inside_ordertype=chiro_freqs[ordertype_indizes[i]]/ordertype_freqs[i]
+        shannon_inside_ordertype[i]=-sum(p * np.log(p) for p in chiro_probs_inside_ordertype)/np.log(ordertype_indizes[i].shape[0])
+
+    return shannon_over_chirotopes, shannon_over_ordertypes, shannon_inside_ordertype
