@@ -1,6 +1,5 @@
 import numpy as np
 import itertools as iter
-import time
 
 def generate_matrix_from_string(input_str,emb_dim):
     """
@@ -130,7 +129,7 @@ def ordertypes_from_chirotopes(input_list,order):
             different_ordertype_list.append(iter_chiro)
                 
     return same_ordertype_list,different_ordertype_list
-
+  
 
 def index_of_ordertypes(chirotope_input,emb_dim):
     """
@@ -160,7 +159,7 @@ def index_of_ordertypes(chirotope_input,emb_dim):
         index_lists.append([i for i, val in enumerate(extrem_points_count_list) if val == unique[k]])
         
     return unique,counts,index_lists
- 
+
 
 def list_of_ordertypes(chiro_input,index_input):
    
@@ -180,7 +179,7 @@ def list_of_ordertypes(chiro_input,index_input):
         ordertype_lists.append(np.array(ordertype_list))
         mask=np.isin(iter_chiros,ordertype_list)
         #print(mask)
-        index_lists.append(remaining_chiros)
+        index_lists.append(iter_indizes[mask])
         iter_chiros=iter_chiros[~mask]
         iter_indizes=iter_indizes[~mask]
 
@@ -200,7 +199,7 @@ def entropies(chiro_freqs,order): #absolut frequency as input becuase its more s
             parts = [p for p in line.strip().split(" ")]
 
             arr = np.array(parts, dtype=int)
-            print(arr)
+            #print(arr)
             ordertype_indizes.append(arr)
 
     #shannon over all chirotopes
